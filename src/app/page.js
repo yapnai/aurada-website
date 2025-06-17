@@ -65,7 +65,7 @@ export default function Home() {
   };
 
   if (showSuccess) {
-    return (
+  return (
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex items-center justify-center p-4">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center">
           <div className="flex items-center justify-center mx-auto mb-6">
@@ -271,8 +271,8 @@ export default function Home() {
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-6 md:p-12">
             <div className="text-center mb-8 md:mb-12">
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">
-                Scale business without <br />
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">scaling your headcount</span>
+                Ready to Scale Your Business? <br />
+                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Get a Week on Us.</span>
               </h3>
               <p className="text-base md:text-xl text-gray-300 leading-relaxed px-4">
                 Zero hardware required. Operational in 48 hours. Fill out the form below for frictionless adoption.
@@ -520,13 +520,13 @@ export default function Home() {
                       Setting Up Your Pilot...
                     </div>
                   ) : (
-                    'Start My Free 7 Day Pilot'
+                    "Start My Free Week"
                   )}
                 </button>
               </div>
               
               <p className="text-xs md:text-sm text-gray-400 text-center leading-relaxed px-4">
-                By submitting this form, you agree to be contacted by our team to discuss Aurada&apos;s services. Projected 8-15x ROI via reduced labor and increased sales.
+                By submitting this form, you agree to be contacted by our team to discuss Aurada&apos;s services.
               </p>
             </form>
           </div>

@@ -14,7 +14,7 @@ export default function Header() {
               className="h-20 w-auto"
             />
           </div>
-          <div className="text-sm text-gray-300">
+          <div className="text-xs md:text-sm text-gray-300">
             Questions? Call us at <span className="font-semibold text-cyan-400">(703) 969-9580</span>
           </div>
         </div>
