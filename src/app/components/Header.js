@@ -11,7 +11,7 @@ export default function Header() {
               alt="Aurada"
               width={300}
               height={90}
-              className="h-16 w-auto"
+              className="h-20 w-auto"
             />
           </div>
           <div className="text-sm text-gray-300">
