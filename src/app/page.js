@@ -65,21 +65,21 @@ export default function Home() {
   };
 
   if (showSuccess) {
-  return (
+    return (
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex items-center justify-center p-4">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center">
           <div className="flex items-center justify-center mx-auto mb-6">
             <Image
-              src="/aurada-logo.svg"
-              alt="Aurada Logo"
+              src="/yapn-logo.svg"
+              alt="yapn Logo"
               width={80}
               height={80}
               className="w-16 md:w-20 h-16 md:h-20"
             />
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Welcome to Aurada!</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Welcome to Yapn!</h2>
           <p className="text-gray-300 mb-8 leading-relaxed text-sm md:text-base">
-            Thank you for your interest. Our team will contact you within 24 hours to discuss how Aurada can transform your restaurant&apos;s phone ordering experience.
+            Thank you for your interest. Our team will contact you within 24 hours to discuss how Yapn can transform your restaurant&apos;s phone ordering experience.
           </p>
           <button 
             onClick={() => setShowSuccess(false)}
@@ -103,8 +103,8 @@ export default function Home() {
           <div className="text-center mb-12 md:mb-20">
             <div className="flex flex-col md:flex-row items-center justify-center mb-8 md:mb-12">
               <Image
-                src="/aurada-logo.svg"
-                alt="Aurada"
+                src="/yapn-logo.svg"
+                alt="yapn"
                 width={600}
                 height={180}
                 className="h-20 md:h-32 w-auto mb-4 md:mb-0 md:mr-8"
@@ -217,7 +217,7 @@ export default function Home() {
               <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">restaurant ordering</span>
             </h2>
             <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-              AI agents act like trained employees, ready to take action while you stay in control. With Aurada, you can handle every order and make it personal—at scale.
+              AI agents act like trained employees, ready to take action while you stay in control. With Yapn, you can handle every order and make it personal—at scale.
             </p>
           </div>
           
@@ -526,7 +526,7 @@ export default function Home() {
               </div>
               
               <p className="text-xs md:text-sm text-gray-400 text-center leading-relaxed px-4">
-                By submitting this form, you agree to be contacted by our team to discuss Aurada&apos;s services.
+                By submitting this form, you agree to be contacted by our team to discuss Yapn&apos;s services.
               </p>
             </form>
           </div>

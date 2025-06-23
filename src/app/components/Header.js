@@ -7,8 +7,8 @@ export default function Header() {
         <div className="flex justify-between items-center py-1">
           <div className="flex items-center">
             <Image
-              src="/aurada-logo.svg"
-              alt="Aurada"
+              src="/yapn-logo.svg"
+              alt="yapn"
               width={300}
               height={90}
               className="h-20 w-auto"

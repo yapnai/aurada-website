@@ -11,8 +11,8 @@ export default function Footer() {
           {/* Logo section with horizontal alignment */}
           <div className="flex items-center md:mb-0">
             <Image
-              src="/aurada-logo.svg"
-              alt="Aurada Logo"
+              src="/yapn-logo.svg"
+              alt="yapn Logo"
               width={48} // Next.js optimization dimensions
               height={48} // Next.js optimization dimensions
               className="w-20 h-20 mr-2" // 80px display size with right spacing
@@ -22,7 +22,7 @@ export default function Footer() {
           </div>
           {/* Legal text with responsive font sizing - smaller on mobile */}
           <div className="text-xs md:text-sm text-gray-400">
-            © 2025 Aurada. All rights reserved. | Privacy Policy | Terms of Service
+            © 2025 Yapn. All rights reserved. | Privacy Policy | Terms of Service
           </div>
         </div>
       </div>

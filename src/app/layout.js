@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Aurada - AI Voice Assistant for Restaurants",
-  description: "Sign up your restaurant for Aurada's AI voice assistant that takes phone orders automatically. Streamline your order process and never miss a call again.",
+  title: "Yapn. - AI Voice Assistant for Restaurants",
+  description: "Sign up your restaurant for Yapn's AI voice assistant that takes phone orders automatically. Streamline your order process and never miss a call again.",
   keywords: "restaurant AI, voice assistant, phone orders, restaurant automation, order management",
 };
 
