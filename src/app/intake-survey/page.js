@@ -153,17 +153,16 @@ export default function IntakeSurvey() {
       {/* Header */}
       <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center">
             <Image
               src="/yapn-logo.svg"
               alt="yapn"
-              width={150}
-              height={50}
-              className="h-16 w-auto"
+              width={450}
+              height={450}
             />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Were excited to get you set up!
+            We&apos;re excited to get you set up!
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Please answer in as much detail as possible. This information will be used to train your AI agent 
@@ -522,7 +521,7 @@ function PhoneOperationsStep({ formData, handleInputChange, handleArrayToggle })
       {/* Complaint Handling */}
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-3">
-          How should your AI handle complaints or issues?
+          What types or requests do you typically receive?
         </label>
         <textarea
           value={formData.complaintHandling}
