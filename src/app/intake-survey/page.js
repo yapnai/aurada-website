@@ -1,16 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function IntakeSurvey() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [sessionId, setSessionId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     // Business Basics
+    restaurantName: '',
     businessCategory: '',
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
+    contactRole: '',
+    businessAddress: '',
+    businessCity: '',
+    businessState: '',
+    businessZip: '',
     website: '',
     socialMedia: '',
-    contactRole: '',
+    numberOfLocations: '',
     
     // Hours & Schedule
     operatingHours: {
@@ -63,6 +74,7 @@ export default function IntakeSurvey() {
   });
 
   const steps = [
+    'Business Basics',
     'Hours & Schedule', 
     'Menu & Dietary Info',
     'Phone Order Operations',
@@ -101,8 +113,46 @@ export default function IntakeSurvey() {
     }));
   };
 
-  const nextStep = () => {
+  const saveProgress = async (isComplete = false) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/intake-survey', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formData,
+          sessionId,
+          isComplete
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        if (!sessionId) {
+          setSessionId(result.sessionId);
+          // Store in sessionStorage for persistence
+          sessionStorage.setItem('intakeSurveySessionId', result.sessionId);
+          console.log('New session:', result.sessionId);
+        } else {
+          console.log('Existing session:', sessionId);
+        }
+        console.log('API response:', result.message);
+      } else {
+        console.error('Save failed:', result.error);
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const nextStep = async () => {
     if (currentStep < steps.length - 1) {
+      await saveProgress(false); // Save progress but not complete
       setCurrentStep(currentStep + 1);
     }
   };
@@ -113,11 +163,97 @@ export default function IntakeSurvey() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle final submission
-    console.log('Survey submitted:', formData);
+    await saveProgress(true); // Save as complete
+    
+    // Clear session after completion so new surveys start fresh
+    sessionStorage.removeItem('intakeSurveySessionId');
+    setSessionId(null);
+    
     setCurrentStep(steps.length); // Show thank you page
   };
+
+  // Function to start a fresh survey
+  const startFreshSurvey = () => {
+    sessionStorage.removeItem('intakeSurveySessionId');
+    setSessionId(null);
+    setCurrentStep(0);
+    // Reset form data to initial state
+    setFormData({
+      // Business Basics
+      restaurantName: '',
+      businessCategory: '',
+      contactName: '',
+      contactPhone: '',
+      contactEmail: '',
+      contactRole: '',
+      businessAddress: '',
+      businessCity: '',
+      businessState: '',
+      businessZip: '',
+      website: '',
+      socialMedia: '',
+      numberOfLocations: '',
+      
+      // Hours & Schedule
+      operatingHours: {
+        monday: { open: '', close: '', closed: false },
+        tuesday: { open: '', close: '', closed: false },
+        wednesday: { open: '', close: '', closed: false },
+        thursday: { open: '', close: '', closed: false },
+        friday: { open: '', close: '', closed: false },
+        saturday: { open: '', close: '', closed: false },
+        sunday: { open: '', close: '', closed: false }
+      },
+      holidayHours: [],
+      specialEventHours: '',
+      
+      // Menu & Dietary Info
+      allergenOptions: [],
+      dietaryOptions: [],
+      dietaryHandling: '',
+      
+      // Phone Order Operations
+      dailyOrderVolume: '',
+      peakHours: [],
+      commonQuestions: [{ question: '', answer: '' }],
+      complaintHandling: '',
+      
+      // Policies & Service Standards
+      pickupInstructions: '',
+      pickupPolicies: '',
+      pickupLeadTime: '',
+      cateringAvailable: '',
+      cateringRequirements: '',
+      cateringLeadTime: '',
+      brandVoice: '',
+      upsellingApproach: '',
+      paymentPolicies: '',
+      
+      // Integration & Technical
+      currentPOS: '',
+      onlinePlatforms: [],
+      kitchenCapacity: '',
+      
+      // Growth & Insights
+      businessGoals: [],
+      expansionPlans: [],
+      reportingPriorities: [],
+      
+      // File Upload
+      uploadedFiles: [],
+      documentDescription: ''
+    });
+  };
+
+  // Restore session on page load
+  useEffect(() => {
+    // Always start fresh when page loads - don't restore old sessions
+    // This ensures each page visit creates a new survey
+    sessionStorage.removeItem('intakeSurveySessionId');
+    setSessionId(null);
+  }, []);
 
   // Thank you page
   if (currentStep >= steps.length) {
@@ -137,12 +273,18 @@ export default function IntakeSurvey() {
             We&apos;ve received your detailed information and will use it to train your AI agent. 
             A member of our team will reach out to you within 24 hours to begin the setup process.
           </p>
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-6">
             <p className="text-cyan-400 font-medium">What&apos;s Next?</p>
             <p className="text-gray-300 mt-2">
               Our team will review your responses and begin customizing your AI agent to match your restaurant&apos;s unique needs and voice.
             </p>
           </div>
+          <button
+            onClick={startFreshSurvey}
+            className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            Start New Survey
+          </button>
         </div>
       </div>
     );
@@ -196,6 +338,13 @@ export default function IntakeSurvey() {
             
             {/* Step Content */}
             {currentStep === 0 && (
+              <BusinessBasicsStep 
+                formData={formData}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            
+            {currentStep === 1 && (
               <HoursScheduleStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
@@ -204,7 +353,7 @@ export default function IntakeSurvey() {
               />
             )}
             
-            {currentStep === 1 && (
+            {currentStep === 2 && (
               <MenuDietaryStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
@@ -212,7 +361,7 @@ export default function IntakeSurvey() {
               />
             )}
             
-            {currentStep === 2 && (
+            {currentStep === 3 && (
               <PhoneOperationsStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
@@ -220,14 +369,14 @@ export default function IntakeSurvey() {
               />
             )}
             
-            {currentStep === 3 && (
+            {currentStep === 4 && (
               <PoliciesStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
               />
             )}
             
-            {currentStep === 4 && (
+            {currentStep === 5 && (
               <IntegrationStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
@@ -235,14 +384,14 @@ export default function IntakeSurvey() {
               />
             )}
             
-            {currentStep === 5 && (
+            {currentStep === 6 && (
               <GrowthInsightsStep 
                 formData={formData}
                 handleArrayToggle={handleArrayToggle}
               />
             )}
             
-            {currentStep === 6 && (
+            {currentStep === 7 && (
               <DocumentUploadStep 
                 formData={formData}
                 handleInputChange={handleInputChange}
@@ -265,22 +414,314 @@ export default function IntakeSurvey() {
               {currentStep === steps.length - 1 ? (
                 <button
                   onClick={handleSubmit}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  disabled={isLoading}
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Complete Survey
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Completing...
+                    </>
+                  ) : (
+                    'Complete Survey'
+                  )}
                 </button>
               ) : (
                 <button
                   onClick={nextStep}
-                  className="flex items-center bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  disabled={isLoading}
+                  className="flex items-center bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Next
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      Next
+                      <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </>
+                  )}
                 </button>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BusinessBasicsStep({ formData, handleInputChange }) {
+  const businessCategories = [
+    'Fast Casual',
+    'Fine Dining',
+    'Quick Service/Fast Food',
+    'Food Truck',
+    'Bakery',
+    'Cafe/Coffee Shop',
+    'Bar & Grill',
+    'Pizza Restaurant',
+    'Ethnic Cuisine',
+    'Catering Company',
+    'Other'
+  ];
+
+  const locationOptions = [
+    'Single Location',
+    '2-3 Locations',
+    '4-10 Locations',
+    '10+ Locations'
+  ];
+
+  const roleOptions = [
+    'Owner',
+    'General Manager',
+    'Operations Manager',
+    'Assistant Manager',
+    'Other'
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Business Basics</h2>
+        <p className="text-gray-300">Let&apos;s start with some basic information about your business.</p>
+      </div>
+
+      {/* Restaurant Name */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-3">
+          Restaurant/Business Name *
+        </label>
+        <input
+          type="text"
+          value={formData.restaurantName}
+          onChange={(e) => handleInputChange('restaurantName', e.target.value)}
+          className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+          placeholder="Enter your restaurant name"
+          required
+        />
+      </div>
+
+      {/* Business Category */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-3">
+          Business Type/Category *
+        </label>
+        <select
+          value={formData.businessCategory}
+          onChange={(e) => handleInputChange('businessCategory', e.target.value)}
+          className="w-full px-4 py-4 bg-slate-800 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white transition-all duration-300 appearance-none bg-no-repeat bg-right pr-12"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+            backgroundPosition: 'right 0.75rem center',
+            backgroundSize: '1.5em 1.5em'
+          }}
+          required
+        >
+          <option value="">Select business type</option>
+          {businessCategories.map(category => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Contact Information */}
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-6">Primary Contact Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Contact Name *
+            </label>
+            <input
+              type="text"
+              value={formData.contactName}
+              onChange={(e) => handleInputChange('contactName', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="Your name"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Role/Title *
+            </label>
+            <select
+              value={formData.contactRole}
+              onChange={(e) => handleInputChange('contactRole', e.target.value)}
+              className="w-full px-4 py-4 bg-slate-800 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white transition-all duration-300 appearance-none bg-no-repeat bg-right pr-12"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                backgroundPosition: 'right 0.75rem center',
+                backgroundSize: '1.5em 1.5em'
+              }}
+              required
+            >
+              <option value="">Select role</option>
+              {roleOptions.map(role => (
+                <option key={role} value={role}>{role}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Phone Number *
+            </label>
+            <input
+              type="tel"
+              value={formData.contactPhone}
+              onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="(555) 123-4567"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Email Address *
+            </label>
+            <input
+              type="email"
+              value={formData.contactEmail}
+              onChange={(e) => handleInputChange('contactEmail', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Business Location */}
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-6">Business Location</h3>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Street Address *
+            </label>
+            <input
+              type="text"
+              value={formData.businessAddress}
+              onChange={(e) => handleInputChange('businessAddress', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="123 Main Street"
+              required
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-3">
+                City *
+              </label>
+              <input
+                type="text"
+                value={formData.businessCity}
+                onChange={(e) => handleInputChange('businessCity', e.target.value)}
+                className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+                placeholder="City"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-3">
+                State *
+              </label>
+              <input
+                type="text"
+                value={formData.businessState}
+                onChange={(e) => handleInputChange('businessState', e.target.value)}
+                className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+                placeholder="State"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-3">
+                ZIP Code *
+              </label>
+              <input
+                type="text"
+                value={formData.businessZip}
+                onChange={(e) => handleInputChange('businessZip', e.target.value)}
+                className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+                placeholder="12345"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-3">
+            Number of Locations
+          </label>
+          <select
+            value={formData.numberOfLocations}
+            onChange={(e) => handleInputChange('numberOfLocations', e.target.value)}
+            className="w-full px-4 py-4 bg-slate-800 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-white transition-all duration-300 appearance-none bg-no-repeat bg-right pr-12"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+              backgroundPosition: 'right 0.75rem center',
+              backgroundSize: '1.5em 1.5em'
+            }}
+          >
+            <option value="">Select number of locations</option>
+            {locationOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Online Presence */}
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-6">Online Presence (Optional)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Website URL
+            </label>
+            <input
+              type="url"
+              value={formData.website}
+              onChange={(e) => handleInputChange('website', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="https://yourrestaurant.com"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-3">
+              Social Media Handles
+            </label>
+            <input
+              type="text"
+              value={formData.socialMedia}
+              onChange={(e) => handleInputChange('socialMedia', e.target.value)}
+              className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
+              placeholder="@yourrestaurant, Facebook: YourRestaurant"
+            />
           </div>
         </div>
       </div>
@@ -528,7 +969,7 @@ function PhoneOperationsStep({ formData, handleInputChange, handleArrayToggle })
           onChange={(e) => handleInputChange('complaintHandling', e.target.value)}
           rows={4}
           className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder-gray-400 backdrop-blur-xl transition-all duration-300"
-          placeholder="e.g., Apologize sincerely, offer to remake the order or provide a refund, escalate to manager for orders over $50..."
+          placeholder="e.g., Route Complaints to the store manager"
         />
       </div>
     </div>
