@@ -93,9 +93,6 @@ export default function Home() {
               >
                 Start Your Pilot
               </button>
-              <button className="border border-white/20 text-white px-8 md:px-10 py-4 rounded-xl text-base md:text-lg font-semibold hover:bg-white/5 transition-all duration-300">
-                Watch Demo
-              </button>
             </div>
           </div>
 
@@ -107,7 +104,7 @@ export default function Home() {
             </div>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 text-center">
               <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2">$0.20</div>
-              <p className="text-gray-300 text-sm md:text-base">Starting price per minute</p>
+              <p className="text-gray-300 text-sm md:text-base">starting price/min</p>
             </div>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 text-center">
               <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2">8-15x</div>
