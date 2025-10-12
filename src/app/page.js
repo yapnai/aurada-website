@@ -106,8 +106,8 @@ export default function Home() {
               <p className="text-gray-300 text-sm md:text-base">of phone orders lost</p>
             </div>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 text-center">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2">$299</div>
-              <p className="text-gray-300 text-sm md:text-base">per location/month</p>
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2">$0.20</div>
+              <p className="text-gray-300 text-sm md:text-base">Starting price per minute</p>
             </div>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 text-center">
               <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2">8-15x</div>
