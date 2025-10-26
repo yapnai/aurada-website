@@ -21,8 +21,17 @@ export default function Footer() {
             <span className="ml-2 text-gray-400">Speak. Text. Serve.</span>
           </div>
           {/* Legal text with responsive font sizing - smaller on mobile */}
-          <div className="text-xs md:text-sm text-gray-400">
-            © 2025 Yapn. All rights reserved. | Privacy Policy | Terms of Service
+          <div className="text-xs md:text-sm text-gray-400 flex flex-col md:block items-center">
+            <a 
+              href="mailto:team@yapn.ai" 
+              className="hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
+            >
+              team@yapn.ai
+            </a>
+            <span className="hidden md:inline mx-2">|</span>
+            <span className="block md:inline">© 2025 Yapn. All rights reserved.</span>
+            <span className="hidden md:inline mx-2">|</span>
+            <span className="block md:inline">Privacy Policy | Terms of Service</span>
           </div>
         </div>
       </div>
