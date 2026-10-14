@@ -2,27 +2,25 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="site-header">
-      <div className="container header-inner">
-        <a className="brand" href="#top" aria-label="Yapn home">
-          <Image
-            src="/yapn-logo.svg"
-            alt="Yapn"
-            width={535}
-            height={300}
-            priority
-          />
+    <header className="wrap site-header">
+      <a className="logo" href="#top" aria-label="Yapn home">
+        <Image
+          src="/yapn-logo-dark.svg"
+          alt="Yapn"
+          width={399}
+          height={164}
+          priority
+        />
+      </a>
+      <nav className="nav" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a className="nav-contact" href="#contact">
+          Contact
         </a>
-        <nav aria-label="Main navigation">
-          <a className="nav-about" href="#what-we-do">
-            What we do
-          </a>
-          <a href="#contact">Let’s talk</a>
-          <a className="login-link" href="https://dashboard.yapn.ai">
-            Login <span aria-hidden="true">↗</span>
-          </a>
-        </nav>
-      </div>
+        <a className="login" href="https://dashboard.yapn.ai">
+          Log in
+        </a>
+      </nav>
     </header>
   );
 }

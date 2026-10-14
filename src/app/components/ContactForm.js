@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Icon from "./Icon";
 
 export default function ContactForm() {
   const [status, setStatus] = useState("idle");
@@ -99,17 +100,12 @@ export default function ContactForm() {
         </label>
       </div>
       <div className="form-bottom">
-        <span className="form-note">
-          Straight to our team.
-          <br />A conversation starts here.
-        </span>
-        <button
-          className="button button-light"
-          type="submit"
-          disabled={status === "sending"}
-        >
+        <span className="form-note">Goes straight to our team.</span>
+        <button className="btn" type="submit" disabled={status === "sending"}>
           {status === "sending" ? "Sending..." : "Send message"}
-          <span aria-hidden="true">↗</span>
+          <span className="btn-arrow">
+            <Icon name="arrow" />
+          </span>
         </button>
       </div>
       <div aria-live="polite" role="status">

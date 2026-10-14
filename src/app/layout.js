@@ -1,38 +1,42 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Bricolage_Grotesque({
+  variable: "--font-display",
+  subsets: ["latin"],
+  axes: ["opsz"],
+});
+
+const body = Figtree({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const description =
+  "Yapn is an AI phone agent for small businesses. It answers questions, takes phone orders, texts callers the link they need, passes calls to your team and calls customers to confirm appointments.";
 
 export const metadata = {
   metadataBase: new URL("https://yapn.ai"),
-  title: "Yapn | Never miss a call",
-  description:
-    "Make room for every conversation. Yapn helps your business answer inbound calls and connect with customers through outbound campaigns.",
+  title: "Yapn | Your phone rings. Yapn picks up.",
+  description,
   openGraph: {
-    title: "Yapn | Never miss a call",
-    description:
-      "Inbound calls. Outbound campaigns. More room for conversation.",
+    title: "Yapn | Your phone rings. Yapn picks up.",
+    description,
     url: "https://yapn.ai",
     siteName: "Yapn",
     type: "website",
   },
 };
 
+export const viewport = {
+  themeColor: "#FCFAF6",
+};
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <body>
         {children}
         <Analytics />
       </body>
