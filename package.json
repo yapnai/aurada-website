@@ -6,13 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src",
+    "test": "node --test test/*.test.mjs infra/contact/*.test.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
-    "google-auth-library": "^10.3.0",
-    "google-spreadsheet": "^5.0.2",
-    "googleapis": "^160.0.0",
     "next": "15.3.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

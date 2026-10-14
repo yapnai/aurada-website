@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Yapn. - AI Voice Assistant for Restaurants",
-  description: "Sign up your restaurant for Yapn's AI voice assistant that takes phone orders automatically. Streamline your order process and never miss a call again.",
-  keywords: "restaurant AI, voice assistant, phone orders, restaurant automation, order management",
+  metadataBase: new URL("https://yapn.ai"),
+  title: "Yapn | Never miss a call",
+  description:
+    "Make room for every conversation. Yapn helps your business answer inbound calls and connect with customers through outbound campaigns.",
+  openGraph: {
+    title: "Yapn | Never miss a call",
+    description:
+      "Inbound calls. Outbound campaigns. More room for conversation.",
+    url: "https://yapn.ai",
+    siteName: "Yapn",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {

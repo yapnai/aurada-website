@@ -1,0 +1,108 @@
+# Current token summary
+Next.js15 / React19 / Tailwind4. Montserrat sans via CSS Google import, Geist and Geist Mono via next/font. Colors black #000, white #FFF, primary #3630A4, secondary #8E6BF9, cyan #76D0DB; logo accents #3AD0E6, #3630A4, #A866EC. Slate950/blue950 page gradient; transparent glass cards, 1px white10 borders, rounded2xl. Container max-w-7xl; page padding16/24/32; md breakpoint768; hero font30-72px. No tailwind.config; Tailwind4 inline theme.
+
+### src/app/globals.css
+```css
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --primary-blue: #3630A4;
+  --secondary-blue: #8E6BF9;
+  --cyan-accent: #76D0DB;
+  --dark-blue: #76D0DB;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Montserrat', var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary-blue);
+  --color-secondary: var(--secondary-blue);
+  --color-accent: var(--cyan-accent);
+  --color-dark: var(--dark-blue);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #FFFFFF;
+  }
+}
+
+body {
+  background: linear-gradient(135deg, #000000 0%, #3630A4 50%, #000000 100%);
+  color: var(--foreground);
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  min-height: 100vh;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #000000 0%, #3630A4 50%, #000000 100%);
+}
+
+.card-dark {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(118, 208, 219, 0.2);
+}
+
+.text-cyan-accent {
+  color: #76D0DB;
+}
+
+.border-cyan-accent {
+  border-color: #76D0DB;
+}
+
+.bg-cyan-accent {
+  background-color: #76D0DB;
+}
+
+.hover\:bg-cyan-accent:hover {
+  background-color: #6bc5d0;
+}
+
+/* Aurada specific classes */
+.aurada-bg {
+  background: linear-gradient(135deg, #000000 0%, #3630A4 30%, #8E6BF9 70%, #000000 100%);
+}
+
+.aurada-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(118, 208, 219, 0.2);
+}
+
+.aurada-gradient-text {
+  background: linear-gradient(135deg, #76D0DB 0%, #8E6BF9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.aurada-button {
+  background: linear-gradient(135deg, #76D0DB 0%, #8E6BF9 100%);
+  transition: all 0.3s ease;
+}
+
+.aurada-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(118, 208, 219, 0.3);
+}
+
+```
+
+### postcss.config.mjs
+```jsx
+const config = {
+  plugins: ["@tailwindcss/postcss"],
+};
+
+export default config;
+
+```

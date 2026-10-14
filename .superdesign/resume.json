@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "targets": {
+    "/": {
+      "targetKind": "existing-ui",
+      "projectId": "cde6672f-ec5f-4b1c-ade0-3f36423aa342",
+      "baselineDraftId": "22eda118-5896-4920-a01b-55fcd61bf366",
+      "activeDraftId": "22eda118-5896-4920-a01b-55fcd61bf366",
+      "designSystemPath": ".superdesign/design-system.md",
+      "contextFiles": [
+        ".superdesign/design-system.md",
+        "src/app/globals.css",
+        "src/app/page.js",
+        "src/app/components/Header.js",
+        "src/app/components/Footer.js",
+        "src/app/components/ContactForm.js"
+      ],
+      "fingerprints": {
+        ".superdesign/design-system.md": "c2ca461be34fe1cd7dbc05b3591e9a80afeb680c6476ab181ae144f5e8a855b4",
+        "src/app/globals.css": "7babaac0d362c7257c655091ffe9d4e76f9d53d2a0684bfabc9c9b507ddeeb7b",
+        "src/app/page.js": "7e7e61d3b550521414c5b219e957c5a7dcab45917f110a45f6fdcd6ad81466d0",
+        "src/app/components/Header.js": "718468acae85976e679fdb50406011548933954f7422130439fab38da8f46ef9",
+        "src/app/components/Footer.js": "7bad570968e20320c8116c9d68ea558c7073bdcc296112c773eaa8fd4348cd8f",
+        "src/app/components/ContactForm.js": "fb2c0c4842b99e9ecd7a223fdda0b2c3796a0d83af2245e557ab7bfee896d63b"
+      },
+      "referenceIds": [
+        "public-yapn-logo.svg"
+      ],
+      "brandAssets": {
+        "logo": {
+          "assetKey": "public-yapn-logo.svg",
+          "url": "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/projects/cde6672f-ec5f-4b1c-ade0-3f36423aa342/brand-assets/public-yapn-logo.svg/yapn-logo.svg",
+          "sourcePath": "public/yapn-logo.svg"
+        }
+      },
+      "components": [
+        {
+          "name": "Header",
+          "id": "ef3e2a74-0135-47ba-9501-ba7fd352e1fc",
+          "sourcePath": "src/app/components/Header.js",
+          "logoAssetKey": "public-yapn-logo.svg"
+        },
+        {
+          "name": "Footer",
+          "id": "2ec1f6ab-3fb6-428a-bf8e-6105493e4a8b",
+          "sourcePath": "src/app/components/Footer.js",
+          "logoAssetKey": "public-yapn-logo.svg"
+        }
+      ],
+      "drafts": {
+        "22eda118-5896-4920-a01b-55fcd61bf366": {
+          "title": "Yapn - Never miss a call",
+          "visualDirection": "Approved dark cyan editorial landing page",
+          "currentVersion": 2
+        }
+      },
+      "updatedAt": "2026-10-14T16:28:55.489308+00:00"
+    }
+  }
+}
